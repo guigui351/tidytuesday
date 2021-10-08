@@ -10,6 +10,7 @@ library(forcats)
 ## Load fonts
 font_add_google("Poppins", "Poppins")
 font_add_google("Bebas Neue", "Bebas Neue")
+font_add_google("Indie Flower", "Indie Flower")
 
 showtext_auto()
 
@@ -39,8 +40,8 @@ median_salary_2010 <- round(df$median_salary_2010[1],1)
 # Coordinates for arrows
 arrows <-
   tibble(
-    x1 = c(1.5, 13.8, 11.2, 6.4),
-    x2 = c(1.5, 13, 13, 7.9),
+    x1 = c(2.0, 13.6, 11.2, 6.4),
+    x2 = c(1.5, 13, 13.1, 7.9),
     y1 = c(25000, 45000, -30000, 28000),
     y2 = c(1, 29000, -16500, 19000)
   )
@@ -54,6 +55,8 @@ df_labs <-
 
 options(scipen=10000)
 
+pos <- position_jitter(width = 0.2, seed = 2)
+
 # Create plot
 ggplot(df, aes(x = State, y = diff_global_median, color = State)) +
   geom_segment(
@@ -63,7 +66,7 @@ ggplot(df, aes(x = State, y = diff_global_median, color = State)) +
   ) +
   geom_hline(aes(yintercept = 0), color = "white", size = 0.6) +
   geom_point(aes(y = last, size = `Total Employed RN`)) +
-  geom_jitter(size = 2, alpha = 0.25, width = 0.2) +
+  geom_point(size = 2, alpha = 0.25, position = pos) +
   scale_color_manual(values = rev(c("firebrick4", "indianred1", "tomato3", "tan4", "wheat4", "tan3", "orange", "tan1",  "lightsalmon", "moccasin", "darkgrey","gray88", "gray95", "forestgreen", "seagreen", "darkolivegreen4", "cornflowerblue", "#50629E")), guide = "none") +
   geom_text(
     data = df_labs, 
@@ -71,28 +74,28 @@ ggplot(df, aes(x = State, y = diff_global_median, color = State)) +
         color = State, color = after_scale(colorspace::darken(color, .2))), 
     hjust = 0, size = 5.5, family = "Bebas Neue", fontface = "italic", lineheight = .75
   )  +
-  # Add Year infotext to see evolution overtime
-  geom_text_repel(data = df %>% filter(State %in% c("Oregon", "Alabama")), aes(label = Year), color = "white", size = 2) +
+  # Add Year info to see evolution overtime
+  geom_text_repel(data = df %>% filter(State %in% c("Oregon", "South Dakota")), aes(label = Year), color = "white", size = 2, position = pos, segment.color = NA, point.size = NA, max.overlaps = 3) +
   coord_flip() +
   annotate(
-    "text", x = 2, y = 25000, family = "Poppins",
+    "text", x = 2.8, y = 25000, family = "Indie Flower",
     size = 4.5, color = "red",
-    label = glue::glue("US median salary in 2010:\n{round(median_salary_2010, 1)}")
+    label = glue::glue("US average median salary in 2010\n ${round(median_salary_2010, 1)} \n (reference year line)")
   ) +
   annotate(
-    "text", x = 14, y = 45000, family = "Poppins",
+    "text", x = 14, y = 45000, family = "Indie Flower",
     size = 3.7, color = "white",
     label = glue::glue("Bigger dots represent Median salary in 2020")
   ) +
   annotate(
-    "text", x = 10.5, y = -33000, family = "Poppins",
+    "text", x = 10.5, y = -33000, family = "Indie Flower",
     size = 3.7, color = "white",
     label = glue::glue("Each dot represents yearly median salary \n from 1998 to 2020")
   ) +
   annotate(
-    "text", x = 5.5, y = 28000, family = "Poppins",
+    "text", x = 5.5, y = 28000, family = "Indie Flower",
     size = 3.7, color = "white",
-    label = glue::glue("Bars show the difference between median annual salaries \n of registered nurses of each state \n and the national US median salary in 2010")
+    label = glue::glue("Bars show the difference between median annual salaries \n of registered nurses of each state in 2020 \n and the national US median salary in 2010")
   ) +
   geom_curve(
     data = arrows, aes(x = x1, xend = x2,
