@@ -23,7 +23,7 @@ median_salary_year <- nurses %>%
   filter(Year == 2010) %>% 
   summarize(median_salary_2010 = mean(`Annual Salary Median`, na.rm = TRUE)) 
 
-# Diff between median annual salaries of each state and national median salary in 2010
+# Diff between median annual salaries of each state and national US median salary in 2010
 # Select only states with a negative difference, or >20k difference
 df <- nurses %>% 
   bind_cols(median_salary_year) %>%
@@ -46,7 +46,7 @@ arrows <-
     y2 = c(1, 29000, -16500, 19000)
   )
 
-# Label each state
+# Label each state on Y axis
 df_labs <- 
   tibble(
     State = factor(levels(df$State), levels = levels(df$State)),
@@ -55,28 +55,36 @@ df_labs <-
 
 options(scipen=10000)
 
+# Use same jitter position for geom_point and geom_text_repel
 pos <- position_jitter(width = 0.2, seed = 2)
 
-# Create plot
+## Create plot
 ggplot(df, aes(x = State, y = diff_global_median, color = State)) +
+  # Segement from US salry in 2010 and median salary of each state in 2020
   geom_segment(
     aes(x = State, xend = State,
         y = 0, yend = last),
     size = 0.8, alpha = 0.75
   ) +
+  # Intercept line, corresponding to US annual salary in 2010
   geom_hline(aes(yintercept = 0), color = "white", size = 0.6) +
+  # Draw bigger point for annual salaries of each state in 2020, size depends of number of nurses employed in each state
   geom_point(aes(y = last, size = `Total Employed RN`)) +
+  # Draw all annual median salaries of registered nurses from 1998 to 2020
   geom_point(size = 2, alpha = 0.25, position = pos) +
+  # Assign color for each state
   scale_color_manual(values = rev(c("firebrick4", "indianred1", "tomato3", "tan4", "wheat4", "tan3", "orange", "tan1",  "lightsalmon", "moccasin", "darkgrey","gray88", "gray95", "forestgreen", "seagreen", "darkolivegreen4", "cornflowerblue", "#50629E")), guide = "none") +
+  # Customize axis text
   geom_text(
     data = df_labs, 
     aes(x = diff_global_median, y = 58000, label = State, 
         color = State, color = after_scale(colorspace::darken(color, .2))), 
     hjust = 0, size = 5.5, family = "Bebas Neue", fontface = "italic", lineheight = .75
   )  +
-  # Add Year info to see evolution overtime
+  # Add Year text to some states to see evolution overtime
   geom_text_repel(data = df %>% filter(State %in% c("Oregon", "South Dakota")), aes(label = Year), color = "white", size = 2, position = pos, segment.color = NA, point.size = NA, max.overlaps = 3) +
   coord_flip() +
+  # Annotate plot
   annotate(
     "text", x = 2.8, y = 25000, family = "Indie Flower",
     size = 4.5, color = "red",
@@ -103,6 +111,7 @@ ggplot(df, aes(x = State, y = diff_global_median, color = State)) +
     arrow = arrow(length = unit(0.08, "inch")), size = 0.5,
     color = "seagreen1", curvature = -0.3#
   ) +
+  # Customize scales
   scale_y_continuous(expand = c(0, 0), limits = c(-50000, 75000),
                      breaks = c(-25000, -10000, 0, 10000, 25000, 50000)) +
   scale_size_continuous(name = "Total employed registered \n nurses per state in 2020: ",
@@ -111,8 +120,8 @@ ggplot(df, aes(x = State, y = diff_global_median, color = State)) +
                         labels = c("50K", "150K", "250K", "350K"),
                         guide = guide_legend(override.aes = list(colour = "seagreen",
                                                                  alpha = 0.5))) +
-  theme_light() +
   # Customize theme
+  theme_light() +
   theme(
     line = element_blank(),
     panel.background = element_rect(fill = "black"),
