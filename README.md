@@ -14,4 +14,6 @@ Code and plots of the submissions to the #tidytuesday challenge
 ### [2021/ Week 43](https://github.com/guigui351/tidytuesday/tree/master/2021/2021-Week43/) 
 ![./2021/2021-Week43/plots/pumpkins_plot.png](https://raw.githubusercontent.com/guigui351/tidytuesday/master/2021/2021-Week43/plots/pumpkins_plot.png)
 
+![./2021/2021-Week43/plots/pumpkins_heatmap.png](https://raw.githubusercontent.com/guigui351/tidytuesday/master/2021/2021-Week43/plots/pumpkins_heatmap.png)
+
 ***
