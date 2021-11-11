@@ -19,3 +19,8 @@ Code and plots of the submissions to the #tidytuesday challenge
 ### [2021/ Week 44](https://github.com/guigui351/tidytuesday/tree/master/2021/2021-Week44/) 
 ![./2021/2021-Week44/ultra_marathons.png](https://raw.githubusercontent.com/guigui351/tidytuesday/master/2021/2021-Week44/ultra_marathons.png)
 ***
+
+***
+### [2021/ Week 46](https://github.com/guigui351/tidytuesday/tree/master/2021/2021-Week46/) 
+![./2021/2021-Week46/afrihealthsites.png](https://raw.githubusercontent.com/guigui351/tidytuesday/master/2021/2021-Week46/afrihealthsites.png)
+***
